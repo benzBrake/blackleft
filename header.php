@@ -4,21 +4,17 @@
     <meta http-equiv="content-type" content="text/html; charset=<?php $this->options->charset(); ?>"/>
     <title><?php $this->options->title(); ?><?php $this->archiveTitle(); ?></title>
 
-    <script
-        src="https://polyfill.io/v3/polyfill.min.js?features=Array.prototype.forEach%2Cdocument.querySelector"></script>
     <!-- 使用url函数转换相关路径 -->
     <link rel="stylesheet" type="text/css" media="all"
-          href="<?php $this->options->themeUrl('fonts/fira_code.css'); ?>"/>
-    <link rel="stylesheet" type="text/css" media="all" href="<?php $this->options->themeUrl('style.css'); ?>"/>
+          href="<?php echo cdnUrl('fonts/fira_code.css') ?>"/>
+    <link rel="stylesheet" type="text/css" media="all" href="<?php echo cdnUrl('style.css') ?>"/>
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="<?php $this->options->themeUrl('app.js'); ?>"></script>
+    <script src="<?php echo cdnUrl('app.js') ?>"></script>
 
     <!-- 通过自有函数输出HTML头部信息 -->
     <?php $this->header(); ?>
 
-    <!--[if lt IE 7]>
-<link rel="stylesheet" type="text/css" media="all" href="<?php $this->options->themeUrl('ie6.css'); ?>" />
-<![endif]-->
+    <!--[if lt IE 7]><link rel="stylesheet" type="text/css" media="all" href="<?php echo cdnUrl('ie6.css') ?>" /><![endif]-->
 
 </head>
 
