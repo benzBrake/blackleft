@@ -87,4 +87,7 @@ function cdnUrl($uri = '') {
 function themeConfig($form) {
     $cdnPrefix = new Typecho_Widget_Helper_Form_Element_Text('cdnPrefix', null, null, _t('静态资源 CDN 前缀'), _t('不懂请留空'));
     $form->addInput($cdnPrefix);  // 添加输入框到表单
+
+    $footerHTML = new Typecho_Widget_Helper_Form_Element_Textarea('footerHTML', null, null, _t('附加尾部 HTML 代码'), _t('不懂请留空'));
+    $form->addInput($footerHTML);  // 添加输入框到表单
 }

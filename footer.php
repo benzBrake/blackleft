@@ -9,5 +9,6 @@
 <!--    --><?php //if (is_file(Helper::options()->themeFile('status/system_usage.json'))): ?>
 <!--    --><?php //endif; ?>
 <?php $this->footer(); ?>
+<?php echo getStrConf('footerHTML'); ?>
 </body>
 </html>
