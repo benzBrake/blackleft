@@ -1,8 +1,31 @@
+<div id="sidebar_plan"><img src="<?php $this->options->themeUrl('/images/plane.png'); ?>"></div>
 
-    <div id="sidebar_plan"><img src="<?php $this->options->themeUrl(''); ?>/images/plane.png"></div>
-	
-	<div class="grid_4" id="sidebar">	    
-
+<div class="grid_4" id="sidebar">
+    <?php if (is_file($this->options->themeFile($this->options->theme, 'status/system_usage.json'))): ?>
+    <div id="status-widget" class="widget" url="<?php $this->options->themeUrl('status/system_usage.json'); ?>">
+        <h3><?php _e('Status'); ?></h3>
+        <ul>
+            <li id="cpu-usage">
+                CPU <span class="usage"></span>
+               <div class="usage-bar">
+                    <div class="percentage"></div>
+                </div>
+            </li>
+            <li id="ram-usage">
+                RAM  <span class="usage"></span>
+               <div class="usage-bar">
+                   <div class="percentage"></div>
+                </div>
+            </li>
+            <li id="disk-usage">
+                DISK  <span class="usage"></span>
+               <div class="usage-bar">
+                   <div class="percentage"></div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <?php endif; ?>
     <div class="widget">
         <h3><?php _e('Category'); ?></h3>
         <ul>

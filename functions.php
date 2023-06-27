@@ -36,3 +36,42 @@ function gravatarUrl($mail = null, $gravatarOptions = null)
 
     return $url;
 }
+
+/**
+ * 从 Widget_Options 对象获取 Typecho 选项值（文本型）
+ * @param string $key 选项 Key
+ * @param mixed $default 默认值
+ * @param string $method 测空值方法
+ * @return string
+ */
+function getStrConf($key, $default = '', $method = 'empty')
+{
+    $value = Helper::options()->$key;
+    if ($method === 'empty') {
+        return empty($value) ? $default : $value;
+    } else {
+        return call_user_func($method, $value) ? $default : $value;
+    }
+}
+
+
+/**
+ * 获取文章摘要
+ * @param Typecho_Widget|Widget_Archive|Widget_Abstract_Contents $item
+ * @param int|null $length 长度
+ * @param string $trim 结尾
+ * @return string
+ */
+function getAbstract($item, $length = null, $trim = '...')
+{
+    $content = $item->excerpt;
+    $length = $length == null ? getStrConf('abstractLength', 300) : $length;
+    $content = preg_replace('#(<img\s[^>]*)(\balt=)("?)([^"]+)("?)([^>]*>?)#', _t("【图片 %s】", '$4'), $content);
+    $abstract = Typecho_Common::subStr(strip_tags($content), 0, $length, $trim);
+    if ($item->password) {
+        $abstract = _t(_t("加密文章，请前往内页查看详情"));
+    }
+    if (empty($abstract)) $abstract = _t("暂无简介");
+    return $abstract;
+}
+
