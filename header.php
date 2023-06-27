@@ -5,8 +5,6 @@
     <title><?php $this->options->title(); ?><?php $this->archiveTitle(); ?></title>
 
     <!-- 使用url函数转换相关路径 -->
-    <link rel="stylesheet" type="text/css" media="all"
-          href="<?php echo cdnUrl('fonts/fira_code.css') ?>"/>
     <link rel="stylesheet" type="text/css" media="all" href="<?php echo cdnUrl('style.css') ?>"/>
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="<?php echo cdnUrl('app.js') ?>"></script>

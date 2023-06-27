@@ -74,7 +74,7 @@ a:hover {
 }
 
 pre, code, tt {
-    font: 12px 'Fira Code', 'Consolas', SF Pro SC, SF Pro Text, SF Pro Icons, PingFang SC, Lantinghei SC, Microsoft Yahei, Hiragino Sans GB, Microsoft Sans Serif, WenQuanYi Micro Hei, sans-serif;
+    font: 12px 'Consolas', SF Pro SC, SF Pro Text, SF Pro Icons, PingFang SC, Lantinghei SC, Microsoft Yahei, Hiragino Sans GB, Microsoft Sans Serif, WenQuanYi Micro Hei, sans-serif;
     line-height: 1.5;
     color: #eee;
 }
