@@ -29,7 +29,7 @@ $(document).ready(function () {
             fetchData(statusWidget.attr('url'), function (obj) {
                 setValue(cpu, obj.cpu_usage);
                 setValue(mem, obj.mem_usage);
-                setValue(disk, disk.disk_usage);
+                setValue(disk, obj.disk_usage);
             });
         }
 
@@ -43,16 +43,21 @@ $(document).ready(function () {
 
 function fetchData(url, callback, timeOut) {
     timeOut || (timeOut = 2000);
+    let sending = false;
     setInterval(function () {
-        $.ajax({
-            url: url,
-            type: 'GET',
-            dataType: 'json',
-            success: function (response) {
-                if (typeof callback === 'function') {
-                    callback(response);
+        if (!sending) {
+            sending = true;
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    if (typeof callback === 'function') {
+                        callback(response);
+                        sending = false;
+                    }
                 }
-            }
-        });
+            });
+        }
     }, timeOut);
 }
