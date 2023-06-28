@@ -27,17 +27,23 @@ $(document).ready(function () {
 
         if (statusWidget.attr('url')) {
             fetchData(statusWidget.attr('url'), function (obj) {
-                setValue(cpu, obj.cpu_usage);
-                setValue(mem, obj.mem_usage);
-                setValue(disk, obj.disk_usage);
+                setPercentage(cpu, obj.cpu_usage, true);
+                setPercentage(mem, obj.mem_usage);
+                setUsage(mem, obj.mem_total, obj.mem_used);
+                setPercentage(disk, obj.disk_usage);
+                setUsage(disk, obj.disk_total, obj.disk_used);
             });
         }
 
-        function setValue(el, percentage) {
-            let val = parseInt(percentage, 10);
-            el.find('.usage').text(val + "%");
+        function setPercentage(el, percentage, setUsage) {
+            let val = parseFloat(percentage).toFixed(2);
+            if (setUsage) el.find(".usage").text(val + "%");
             el.find('.percentage').css('width', val + "%");
         }
+        function setUsage(el, total, used) {
+            el.find(".usage").text(used + "/" + total);
+        }
+
     }
 });
 
