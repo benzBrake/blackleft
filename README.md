@@ -7,6 +7,12 @@
 ### 如何在侧边栏显示服务器状态
 开机执行 `status/status.sh`，这个脚本是死循环，无需计划任务定期执行。
 
+```shell
+cd 主题目录 && nohup status/status.sh -o status/system_usage.json &
+```
+
+
+
 ### 设置静态资源 CDN
 
 填写 `https://jsd.onmicrosoft.cn/gh/benzBrake/blackleft/` 即可，如果你知道别的 github 镜像站，也可以自行填入
