@@ -40,7 +40,9 @@ $(document).ready(function () {
             if (setUsage) el.find(".usage").text(val + "%");
             el.find('.percentage').css('width', val + "%");
         }
+
         function setUsage(el, total, used) {
+            if (typeof total === "undefined" || typeof used === "undefined") return;
             el.find(".usage").text(used + "/" + total);
         }
 
