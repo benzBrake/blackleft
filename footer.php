@@ -6,6 +6,7 @@
         href="<?php $this->options->commentsFeedUrl(); ?>"><?php _e('评论'); ?> RSS</a>
 </div><!-- end #footer -->
 </div>
+<script src="<?php echo cdnUrl('app.js') ?>"></script>
 <!--    --><?php //if (is_file(Helper::options()->themeFile('status/system_usage.json'))): ?>
 <!--    --><?php //endif; ?>
 <?php $this->footer(); ?>

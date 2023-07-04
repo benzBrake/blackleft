@@ -6,13 +6,18 @@
 
     <!-- 使用url函数转换相关路径 -->
     <link rel="stylesheet" type="text/css" media="all" href="<?php echo cdnUrl('style.css') ?>"/>
-    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="<?php echo cdnUrl('app.js') ?>"></script>
+    <script src="<?php echo cdnUrl('jquery.min.js') ?>"></script>
 
     <!-- 通过自有函数输出HTML头部信息 -->
     <?php $this->header(); ?>
 
-    <!--[if lt IE 7]><link rel="stylesheet" type="text/css" media="all" href="<?php echo cdnUrl('ie6.css') ?>" /><![endif]-->
+    <!--[if lt IE 7]>
+    <script src="<?php echo cdnUrl('DD_belatedPNG.js') ?>"></script>
+    <script type="text/javascript">
+        DD_belatedPNG.fix('img,div,ul,li,li a,a,input,p,blockquote,span,h1,h2,h3');
+    </script>
+    <link rel="stylesheet" type="text/css" media="all" href="<?php echo cdnUrl('ie6.css') ?>" />
+    <![endif]-->
 
 </head>
 
@@ -29,16 +34,20 @@
                         href="<?php $this->options->siteUrl(); ?>"><?php _e('home'); ?></a></li>
                 <?php $this->widget('Widget_Contents_Page_List')->to($pages); ?>
                 <li>
-                    <a class="sub-toggle" href="javascript:void(0)"><?php _e("more"); ?> +</a>
+                    <a class="sub-toggle" href="#"><?php _e("more"); ?> +</a>
                     <ul class="sub-menu">
                         <div class="sub-menu-border-top"></div>
                         <div class="sub-menu-bg"></div>
-                        <?php while ($pages->next()): ?>
-                            <li<?php if ($this->is('page', $pages->slug)): ?> class="current"<?php endif; ?>><a
-                                    href="<?php $pages->permalink(); ?>"
-                                    title="<?php $pages->title(); ?>"><?php $pages->title(); ?></a></li>
-                        <?php endwhile; ?>
                         <div class="sub-menu-border-bottom"></div>
+                        <?php while ($pages->next()): ?>
+                            <li<?php if ($this->is('page', $pages->slug)): ?> class="current"<?php endif; ?>>
+                                <a href="<?php $pages->permalink(); ?>"
+                                    title="<?php $pages->title(); ?>">
+                                    <?php $pages->title(); ?>
+                                </a>
+                            </li>
+                        <?php endwhile; ?>
+
                     </ul>
                 </li>
             </ul>

@@ -287,7 +287,12 @@ li.current a {
 
 #topper_nav .sub-menu .sub-menu-bg {
     position: absolute;
-    inset: 0;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    width: 100%;
     background: url(images/left-bar-content.gif);
 }
 
@@ -312,7 +317,6 @@ li.current a {
 
 #topper_nav .sub-menu.active {
     display: block;
-
 }
 
 #topper_search {
@@ -430,12 +434,12 @@ span.post_title_comments a {
     height: 45px;
     text-align: center;
     font-size: 16px;
-    background: url(images/title-comments.png);
+    background: url(images/title-comments.png) no-repeat;
     line-height: 45px;
 }
 
 span.post_title_comments a:hover {
-    background: url(images/title-comments.png) no-repeat
+    background: url(images/title-comments.png) no-repeat;
     padding-top: 45px;
     background-position: 0 45px;
     color: #fff;

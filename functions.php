@@ -75,7 +75,8 @@ function getAbstract($item, $length = null, $trim = '...')
     return $abstract;
 }
 
-function cdnUrl($uri = '') {
+function cdnUrl($uri = '')
+{
     $prefix = getStrConf('cdnPrefix');
     if (strpos($prefix, 'http') === false && strpos($prefix, '//') === false) {
         $prefix = Helper::options()->themeUrl;
@@ -83,11 +84,11 @@ function cdnUrl($uri = '') {
     $prefix = rtrim($prefix, "/") . "/";
     return Typecho_Common::url($uri, $prefix);
 }
-
-function themeConfig($form) {
+function themeConfig($form)
+{
     $cdnPrefix = new Typecho_Widget_Helper_Form_Element_Text('cdnPrefix', null, null, _t('静态资源 CDN 前缀'), _t('不懂请留空'));
-    $form->addInput($cdnPrefix);  // 添加输入框到表单
+    $form->addInput($cdnPrefix);
 
     $footerHTML = new Typecho_Widget_Helper_Form_Element_Textarea('footerHTML', null, null, _t('附加尾部 HTML 代码'), _t('不懂请留空'));
-    $form->addInput($footerHTML);  // 添加输入框到表单
+    $form->addInput($footerHTML);
 }

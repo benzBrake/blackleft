@@ -12,7 +12,6 @@ $this->need('header.php');
 ?>
 
 <div class="grid_10" id="content">
-
     <?php while ($this->next()): ?>
         <div class="post_title">
             <span class="post_title_comments"><a
@@ -37,8 +36,6 @@ $this->need('header.php');
         </ol>
     </div>
     <div class="content_bot"></div>
-
-
 </div><!-- end #content-->
 <?php $this->need('sidebar.php'); ?>
 <?php $this->need('footer.php'); ?>

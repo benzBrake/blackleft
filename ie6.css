@@ -1,2 +1,16 @@
+span.topper_search_input input {
+    padding: 10px;
+    background-repeat: no-repeat;
+}
+.sub-menu {
+    display: block;
+}
+.sub-menu li {
+    display: inline-block;
+    white-space: nowrap;
+}
+.sub-menu .sub-menu-bg {
+
+}
 #sidebar {float: left; width: 262px; overflow:hidden; position:static;}
 #sidebar_plan {display:none;}
