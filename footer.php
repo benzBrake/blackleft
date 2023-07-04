@@ -7,8 +7,8 @@
 </div><!-- end #footer -->
 </div>
 <script src="<?php echo cdnUrl('app.js') ?>"></script>
-<!--    --><?php //if (is_file(Helper::options()->themeFile('status/system_usage.json'))): ?>
-<!--    --><?php //endif; ?>
+<?php if (is_file(Helper::options()->themeFile('status/system_usage.json'))): ?>
+<?php endif; ?>
 <?php $this->footer(); ?>
 <?php echo getStrConf('footerHTML'); ?>
 </body>
