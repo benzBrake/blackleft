@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 while true; do
     # 获取CPU占用百分比
     cpu_usage=$(grep 'cpu ' /proc/stat | awk '{usage=($2+$4)*100/($2+$4+$5)} END {print usage "%"}')
@@ -38,9 +38,10 @@ while true; do
     # 获取根目录占用百分比
     disk_total=$(df -h / | awk '/\// {print $2}')
     disk_used=$(df -h / | awk '/\// {print $3}')
+    disk_usage=$(df -h / | awk '/\// {usage = $3 / $2 * 100; printf "%.2f", usage}')
 
     # 构建JSON对象
-    json='{ "cpu_usage": "'$cpu_usage'", "mem_usage": "'$mem_usage'", "mem_total": "'$mem_total' MB", "mem_used": "'$mem_used' MB", "swap_usage": "'$swap_usage'", "swap_total": "'$swap_total' MB", "swap_used": "'$swap_used' MB", "disk_usage": "'$disk_usage'" }'
+    json='{ "cpu_usage": "'$cpu_usage'", "mem_usage": "'$mem_usage'", "mem_total": "'$mem_total'MB", "mem_used": "'$mem_used'MB", "swap_usage": "'$swap_usage'", "swap_total": "'$swap_total'MB", "swap_used": "'$swap_used'MB", "disk_usage": "'$disk_usage'%", "disk_total": "'$disk_total'B", "disk_used": "'$disk_used'B" }'
 
     # 将JSON对象写入文件
     echo "$json" > /srv/usr/themes/blackleft/status/system_usage.json
