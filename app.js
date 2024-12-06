@@ -47,6 +47,13 @@ $(document).ready(function () {
         }
 
     }
+
+    // 如果是 IE，则替换小写字母为大写字母
+    if (navigator.userAgent.indexOf("MSIE") > -1 || navigator.userAgent.indexOf("Trident") > -1) {
+        $('#topper_logo h1, #topper_nav li a, #sidebar h3').each(function () {
+            $(this).html($(this).html().toUpperCase());
+        });
+    }
 });
 
 function fetchData(url, callback, timeOut) {

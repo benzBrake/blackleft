@@ -11,14 +11,8 @@
  * gobal settings
  * --------------- */
 @font-face {
-    font-family: "Mulgrave W00 Regular";
-    src: url("fonts/Mulgrave W00 Regular.eot"); /* IE9*/
-    src: url("fonts/Mulgrave W00 Regular.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */ url("fonts/Mulgrave W00 Regular.woff2") format("woff2"), /* chrome、firefox */ url("fonts/Mulgrave W00 Regular.woff") format("woff"), /* chrome、firefox */ url("fonts/Mulgrave W00 Regular.ttf") format("truetype"), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/ url("fonts/Mulgrave W00 Regular.svg#Mulgrave W00 Regular") format("svg"); /* iOS 4.1- */
-}
-
-@font-face {
-    font-family: "PingFangLaiJiangHuLangTi";
-    src: url("fonts/PingFangLaiJiangHuLangTi-2.ttf") format("truetype");
+    font-family: "Real XiangCui ZeroHei";
+    src: url("fonts/REAL-XIANGCUI-ZEROHEI.ttf") format("truetype");
 }
 
 * {
@@ -31,7 +25,7 @@ body {
     color: #fff;
     font-size: 16px;
     line-height: 1.7;
-    font-family: "Mulgrave W00 Regular", "PingFangLaiJiangHuLangTi", Georgia, "Times New Roman", Times, serif;
+    font-family: "Real XiangCui ZeroHei", Georgia, "Times New Roman", Times, serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -69,9 +63,13 @@ a:hover {
 }
 
 pre, code, tt {
-    font: 12px 'Consolas', SF Pro SC, SF Pro Text, SF Pro Icons, PingFang SC, Lantinghei SC, Microsoft Yahei, Hiragino Sans GB, Microsoft Sans Serif, WenQuanYi Micro Hei, sans-serif;
+    /*font: 12px 'Consolas', SF Pro SC, SF Pro Text, SF Pro Icons, PingFang SC, Lantinghei SC, Microsoft Yahei, Hiragino Sans GB, Microsoft Sans Serif, WenQuanYi Micro Hei, sans-serif;*/
     line-height: 1.5;
     color: #eee;
+    font-family: inherit;
+    font-weight: lighter;
+    font-size: 12px;
+    transform: scale(0.95,1);
 }
 
 pre {
@@ -216,8 +214,9 @@ ul {
 
 #topper_logo h1 {
     /*display: none;*/
-    font-size: 3em;
-    font-family: "Mulgrave W00 Regular", "ChaoDouZhaPingNuFangHei";
+    font-size: 2.5em;
+    text-transform: uppercase;
+    font-family: "Real XiangCui ZeroHei";
 }
 
 #topper_logo a {
@@ -744,6 +743,7 @@ ol#comment_list li .comment_respond textarea {
     padding-left: 25px;
     font-size: 22px;
     font-weight: bold;
+    text-transform: uppercase;
 }
 
 .widget {
