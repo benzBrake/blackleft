@@ -17,13 +17,8 @@
 }
 
 @font-face {
-    font-family: "ChaoDouZhaPingNuFangHei";
-    src: url("fonts/ChaoDouZhaPingNuFangHei-Shan(DouFont-NufangGB-Flash)-2.ttf") format("truetype");
-}
-
-@font-face {
-    font-family: "ChaoZiSheKongHaiXinJingJianFan";
-    src: url("fonts/ChaoZiSheKongHaiXinJingJianFan-Shan(CHAO-XinJingGBT-Flash)-2.ttf") format("truetype");
+    font-family: "PingFangLaiJiangHuLangTi";
+    src: url("fonts/PingFangLaiJiangHuLangTi-2.ttf") format("truetype");
 }
 
 * {
@@ -36,7 +31,7 @@ body {
     color: #fff;
     font-size: 16px;
     line-height: 1.7;
-    font-family: "Mulgrave W00 Regular", "ChaoZiSheKongHaiXinJingJianFan", Georgia, "Times New Roman", Times, serif;
+    font-family: "Mulgrave W00 Regular", "PingFangLaiJiangHuLangTi", Georgia, "Times New Roman", Times, serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -431,7 +426,7 @@ span.post_title_comments {
 span.post_title_comments a {
     float: left;
     width: 63px;
-    height: 45px;
+    height: 44px;
     text-align: center;
     font-size: 16px;
     background: url(images/title-comments.png) no-repeat;
@@ -439,10 +434,10 @@ span.post_title_comments a {
 }
 
 span.post_title_comments a:hover {
-    background: url(images/title-comments.png) no-repeat;
     padding-top: 45px;
-    background-position: 0 45px;
+    background: url(images/title-comments.png) no-repeat 0 45px;
     color: #fff;
+    transform: translateY(-45px);
 }
 
 span.post_title_title {
