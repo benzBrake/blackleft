@@ -1,12 +1,92 @@
 <?php
 /**
  * Typecho 项目打包脚本
- * 将项目文件打包为带时间戳的 tar.gz 文件
+ * 获取 @version 信息并打包为 zip 文件
+ * 
+ * 使用方式：
+ * 1. 在下面定义 PACKAGE_NAME 常量来强制定义包名（可选）
+ *    define('PACKAGE_NAME', 'YourPackageName');
+ * 2. 运行脚本
  */
 
 // 1. 配置部分
 define('PROJECT_ROOT', dirname(__DIR__));
 define('EXCLUDE_FILE', __DIR__ . '/pack.exclude');
+
+// 在这里强制定义包名（可选）
+// define('PACKAGE_NAME', 'YourPackageName');
+
+/**
+ * 从文件头部注释中获取 @version 信息
+ * 
+ * @param string $filePath 文件路径
+ * @return string 版本信息
+ */
+function getVersionInfo($filePath) {
+    if (!file_exists($filePath)) {
+        return '';
+    }
+    
+    $content = file_get_contents($filePath);
+    
+    // 使用正则表达式匹配 @version
+    if (preg_match('/@version\s+([^\n\r]+)/', $content, $matches)) {
+        return trim($matches[1]);
+    }
+    
+    return '';
+}
+
+/**
+ * 获取项目的包信息
+ * 
+ * @return array 包含 package 和 version 信息的数组
+ * @throws Exception 如果无法获取到必要的包信息
+ */
+function getProjectPackageInfo() {
+    $package = '';
+    
+    // 检查是否已经定义了 PACKAGE_NAME 常量
+    if (defined('PACKAGE_NAME')) {
+        echo "使用强制定义的包名: " . PACKAGE_NAME . "\n";
+        $package = PACKAGE_NAME;
+    } else {
+        echo "未定义 PACKAGE_NAME 常量，使用项目目录名作为包名\n";
+        
+        // 获取项目目录名
+        $projectDir = basename(PROJECT_ROOT);
+        $package = $projectDir;
+        
+        echo "项目目录名: " . $package . "\n";
+    }
+    
+    // 获取版本信息
+    $version = '';
+    
+    // 优先尝试从 index.php 获取
+    $indexFile = PROJECT_ROOT . '/index.php';
+    if (file_exists($indexFile)) {
+        $version = getVersionInfo($indexFile);
+    }
+    
+    // 其次尝试从 Plugin.php 获取
+    if (empty($version)) {
+        $pluginFile = PROJECT_ROOT . '/Plugin.php';
+        if (file_exists($pluginFile)) {
+            $version = getVersionInfo($pluginFile);
+        }
+    }
+    
+    // 如果没有获取到版本信息，抛出异常
+    if (empty($version)) {
+        throw new Exception("错误: 无法获取版本信息。请确保 index.php 或 Plugin.php 中包含 @version 注释");
+    }
+    
+    return [
+        'package' => $package,
+        'version' => $version
+    ];
+}
 
 /**
  * 读取排除列表
@@ -116,25 +196,40 @@ function getAllFiles($dir, $excludeList, $baseDir = null) {
 }
 
 /**
- * 创建压缩包
+ * 创建 ZIP 压缩包
  * 
  * @param array $files 文件列表
  * @param string $archiveName 压缩包名称
+ * @param string $packageDir 包名（作为压缩包内的顶层目录）
  * @return bool 是否成功
  */
-function createArchive($files, $archiveName) {
+function createZipArchive($files, $archiveName, $packageDir) {
     try {
-        // 使用 PharData 创建 tar 压缩包
-        $tarFile = PACK_DIR . '/' . str_replace('.gz', '', $archiveName);
-        $phar = new PharData($tarFile);
+        $zipFile = PACK_DIR . '/' . $archiveName;
         
-        // 先添加所有文件到 tar
-        echo "正在添加文件到 tar 包...\n";
+        // 检查文件是否已存在
+        if (file_exists($zipFile)) {
+            echo "发现同名压缩包，将进行覆盖: $zipFile\n";
+        }
+        
+        $zip = new ZipArchive();
+        
+        // 使用 OVERWRITE 标志确保覆盖现有文件
+        if ($zip->open($zipFile, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
+            echo "无法创建 ZIP 文件: $zipFile\n";
+            return false;
+        }
+        
+        echo "正在添加文件到 ZIP 包...\n";
+        echo "所有文件将被放在 '$packageDir' 目录下\n";
+        
         $count = 0;
         $total = count($files);
         
         foreach ($files as $file) {
-            $phar->addFile($file['absolute'], $file['relative']);
+            // 添加文件到 ZIP，前面加上包目录
+            $zipPath = $packageDir . '/' . $file['relative'];
+            $zip->addFile($file['absolute'], $zipPath);
             $count++;
             
             // 显示进度
@@ -143,9 +238,8 @@ function createArchive($files, $archiveName) {
             }
         }
         
-        // 然后压缩完整的 tar 文件
-        echo "正在压缩 tar 文件为 gz 格式...\n";
-        $phar->compress(Phar::GZ);
+        // 关闭 ZIP 文件
+        $zip->close();
         
         echo "压缩包创建完成: $archiveName\n";
         return true;
@@ -162,52 +256,60 @@ function createArchive($files, $archiveName) {
 function main() {
     echo "=== Typecho 项目打包工具 ===\n";
     
-    // 生成时间戳
-    $timestamp = date('Y-m-d-His');
-    $archiveName = "pack-$timestamp.tar.gz";
-    
-    echo "目标压缩包: $archiveName\n";
-    
-    // 读取排除列表
-    echo "读取排除列表...\n";
-    $excludeList = readExcludeList();
-    echo "排除规则数量: " . count($excludeList) . "\n";
-    
-    // 获取文件列表
-    echo "扫描项目文件...\n";
-    $files = getAllFiles(PROJECT_ROOT, $excludeList);
-    echo "找到文件数量: " . count($files) . "\n";
-    
-    if (empty($files)) {
-        echo "没有找到要打包的文件！\n";
-        return;
-    }
-    
-    // 创建压缩包
-    echo "开始创建压缩包...\n";
-    if (createArchive($files, $archiveName)) {
-        echo "打包完成！\n";
-        echo "压缩包位置: " . PACK_DIR . "/$archiveName\n";
+    try {
+        // 获取项目包信息
+        echo "读取项目信息...\n";
+        $packageInfo = getProjectPackageInfo();
         
-        // 显示压缩包大小
-        $archivePath = PACK_DIR . "/$archiveName";
-        if (file_exists($archivePath)) {
-            $size = filesize($archivePath);
-            $sizeMb = round($size / 1024 / 1024, 2);
-            echo "压缩包大小: {$sizeMb} MB\n";
+        echo "包名: " . $packageInfo['package'] . "\n";
+        echo "版本: " . $packageInfo['version'] . "\n";
+        
+        // 生成压缩包名称（仅使用年月日）
+        $timestamp = date('Ymd');
+        $archiveName = "{$packageInfo['package']}-{$packageInfo['version']}-$timestamp.zip";
+        
+        echo "目标压缩包: $archiveName\n";
+        
+        // 读取排除列表
+        echo "读取排除列表...\n";
+        $excludeList = readExcludeList();
+        echo "排除规则数量: " . count($excludeList) . "\n";
+        
+        // 获取文件列表
+        echo "扫描项目文件...\n";
+        $files = getAllFiles(PROJECT_ROOT, $excludeList);
+        echo "找到文件数量: " . count($files) . "\n";
+        
+        if (empty($files)) {
+            echo "没有找到要打包的文件！\n";
+            return;
         }
-
-        // 删除临时文件
-        echo "删除无用tar文件...\n";
-        unlink(PACK_DIR . '/' . str_replace('.gz', '', $archiveName));
-    } else {
-        echo "打包失败！\n";
+        
+        // 创建压缩包
+        echo "开始创建压缩包...\n";
+        if (createZipArchive($files, $archiveName, $packageInfo['package'])) {
+            echo "打包完成！\n";
+            echo "压缩包位置: " . PACK_DIR . "/$archiveName\n";
+            
+            // 显示压缩包大小
+            $archivePath = PACK_DIR . "/$archiveName";
+            if (file_exists($archivePath)) {
+                $size = filesize($archivePath);
+                $sizeMb = round($size / 1024 / 1024, 2);
+                echo "压缩包大小: {$sizeMb} MB\n";
+            }
+        } else {
+            echo "打包失败！\n";
+        }
+    } catch (Exception $e) {
+        echo $e->getMessage() . "\n";
+        exit(1);
     }
 }
 
-// 检查 Phar 扩展是否可用
-if (!extension_loaded('phar')) {
-    echo "错误: Phar 扩展未安装，无法创建压缩包\n";
+// 检查 Zip 扩展是否可用
+if (!extension_loaded('zip')) {
+    echo "错误: Zip 扩展未安装，无法创建压缩包\n";
     exit(1);
 }
 
@@ -216,5 +318,6 @@ if (!is_dir($pack_dir)) {
     mkdir($pack_dir, 0755, true);
 }
 define('PACK_DIR', $pack_dir);
+
 // 执行主函数
 main();
