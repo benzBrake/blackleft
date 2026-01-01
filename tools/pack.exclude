@@ -1,0 +1,10 @@
+.vscode
+.idea
+tools
+.gitignore
+.gitatributes
+.gitmodules
+.git
+node_modules
+dist
+pack

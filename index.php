@@ -4,7 +4,7 @@
  *
  * @package Black Left Theme
  * @author ak92
- * @version 1.0.6
+ * @version 1.0.7
  * @link http://www.ak92.com
  */
 
