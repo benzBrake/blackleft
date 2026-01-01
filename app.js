@@ -36,7 +36,7 @@ $(document).ready(function () {
         }
 
         function setPercentage(el, percentage, setUsage) {
-            let val = parseFloat(percentage).toFixed(2);
+            var val = parseFloat(percentage).toFixed(2);
             if (setUsage) el.find(".usage").text(val + "%");
             el.find('.percentage').css('width', val + "%");
         }
@@ -58,7 +58,7 @@ $(document).ready(function () {
 
 function fetchData(url, callback, timeOut) {
     timeOut || (timeOut = 2000);
-    let sending = false;
+    var sending = false;
     setInterval(function () {
         if (!sending) {
             sending = true;
